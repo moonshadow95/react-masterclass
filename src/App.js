@@ -4,40 +4,17 @@ const Wrapper = styled.div`
   display: flex;
 `
 
-const rolling = keyframes`
-  0% {
-    transform: rotate(0deg)
-  }
-  50% {
-    transform: rotate(180deg);
-    border-radius: 50%;
-  }
-  100% {
-    transform: rotate(360deg);
-    border-radius: 0;
-  }
-`
-
-const Emoji = styled.span`
-  font-size:100px;
+const Title = styled.h1`
+  text-align: center;
+  color:${props=>props.theme.textColor};
 `
 
 const Box = styled.div`
   width: 200px;
   height: 200px;
-  background-color: teal;
-  animation: ${rolling} 1s linear infinite;
   display: flex;
   align-items: center;
-  justify-content: center;
-
-  ${Emoji} {
-    font-size: 100px;
-
-    &:hover {
-      font-size: 50px;
-    }
-  }
+  background-color:${props=>props.theme.backgroundColor}
 `
 
 function App() {
@@ -45,9 +22,8 @@ function App() {
         <div className="App">
             <Wrapper>
                 <Box>
-                    <Emoji>😍</Emoji>
+                    <Title>Hello, Styled Component?</Title>
                 </Box>
-                <Emoji>😍</Emoji>
             </Wrapper>
         </div>
     );
