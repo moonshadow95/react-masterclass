@@ -1,23 +1,18 @@
 import React, {useState} from 'react';
+import styled from "styled-components";
 
 
 function App() {
-    const [username, setUsername] = useState("")
-    const onChange = (event : React.FormEvent<HTMLInputElement>) => {
-        const {currentTarget: {value}} = event
-        setUsername(value)
-    }
-    const onSubmit = (event:React.FormEvent<HTMLFormElement>)=>{
-        event.preventDefault()
-        console.log(`Hello, ${username}`)
-    }
+    const Container = styled.div`
+      background-color: ${props => props.theme.bgColor}
+    `
+    const H1 = styled.h1`
+    color: ${props => props.theme.textColor};
+    `
     return (
-        <div className="App">
-            <form action="" onSubmit={onSubmit}>
-                <input type="text" placeholder='username' value={username} onChange={onChange}/>
-                <button type='submit'>Log in</button>
-            </form>
-        </div>
+        <Container>
+            <H1> Hello, Styled Component Theme? </H1>
+        </Container>
     );
 }
 
