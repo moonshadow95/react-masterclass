@@ -1,5 +1,5 @@
-import React, {useState} from 'react';
-import {Link, useLocation, useParams} from "react-router-dom";
+import React, {useEffect, useState} from 'react';
+import {Link, RouteObject, useLocation, useParams} from "react-router-dom";
 import styled from "styled-components";
 
 const Container = styled.div`
@@ -25,20 +25,40 @@ const Loader = styled.span`
   color: ${props => props.theme.accentColor};
 `
 
+interface RouteParams {
+    coinId?: string
+}
+
 interface RouteState {
     state: {
         name: string
     }
 }
 
+
 const Coin = () => {
     const [loading, setLoading] = useState(true)
-    const {coinId} = useParams()
+    const [info, setInfo] = useState({})
+    const [price, setPrice] = useState({})
+    const {coinId} = useParams() as RouteParams
     const {state} = useLocation() as RouteState
+
+    useEffect(() => {
+        (async () => {
+            const infoData = await (
+                (await fetch(`https://api.coinpaprika.com/v1/coins/${coinId}`))
+            ).json()
+            const priceData = await (
+                await fetch(`https://api.coinpaprika.com/v1/tickers/${coinId}`)
+            ).json()
+            setInfo(infoData)
+            setPrice(priceData)
+        })()
+    }, []);
     return (
         <Container>
             <Header>
-                <Title>{state?.name || "Loaing..."}</Title>
+                <Title>{state?.name || "Loading..."}</Title>
             </Header>
             {loading ?
                 <Loader>Loading...</Loader> : null
