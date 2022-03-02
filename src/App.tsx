@@ -1,11 +1,6 @@
 import React, {useState} from 'react';
-import Router from "./routes/Router";
-import styled, {ThemeProvider} from "styled-components";
-import {lightTheme, darkTheme} from "./theme";
 import {createGlobalStyle} from "styled-components";
-import {ReactQueryDevtools} from "react-query/devtools";
-import {useRecoilValue, useSetRecoilState} from "recoil";
-import {isDarkAtom} from "./atoms";
+import ToDoList from "./toDoList";
 
 const GlobalStyle = createGlobalStyle`
   @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@500;700&family=Noto+Sans:wght@700&display=swap');
@@ -40,8 +35,6 @@ const GlobalStyle = createGlobalStyle`
   body {
     line-height: 1;
     font-family: 'Noto Sans KR', sans-serif;
-    background-color: ${props => props.theme.bgColor};
-    color: ${props => props.theme.textColor};
 
     ol, ul {
       list-style: none;
@@ -72,30 +65,12 @@ const GlobalStyle = createGlobalStyle`
     }
   }
 `
-const ThemeToggle = styled.button`
-  position: absolute;
-  right: 0;
-  top: 0;
-  margin: 20px;
-  cursor: pointer;
-  background: ${props => props.theme.cardBgColor};
-  color: ${props => props.theme.textColor};
-  border: 1px solid;
-  padding: 10px 14px;
-`
 
 function App() {
-    const isDark = useRecoilValue(isDarkAtom)
-    const setDarkAtom = useSetRecoilState(isDarkAtom)
-    const toggleDarkAtom = () => setDarkAtom(prev => !prev)
     return (
         <>
-            <ThemeProvider theme={isDark ? darkTheme : lightTheme}>
-                <GlobalStyle/>
-                <ThemeToggle onClick={toggleDarkAtom}>{isDark ? 'Dark' : 'Light'}</ThemeToggle>
-                <Router/>
-                <ReactQueryDevtools initialIsOpen={false}/>
-            </ThemeProvider>
+            <GlobalStyle/>
+            <ToDoList/>
         </>
     );
 }
