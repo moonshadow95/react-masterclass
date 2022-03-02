@@ -25,7 +25,7 @@ const CoinList = styled.ul``
 const Coin = styled.li`
   background-color: ${props => props.theme.cardBgColor};
   color: ${props => props.theme.textColor};
-  border: 1px solid white;
+  border: 1px solid;
   border-radius: 15px;
   margin-bottom: 10px;
   font-size: 24px;
@@ -68,13 +68,8 @@ interface ICoin {
     "type": string
 }
 
-interface ICoinsProps {
-}
-
-const Coins = ({}: ICoinsProps) => {
+const Coins = () => {
     const {isLoading, data} = useQuery<ICoin[]>("allCoins", fetchCoins)
-    const setDarkAtom = useSetRecoilState(isDarkAtom)
-    const toggleDarkAtom = () => setDarkAtom(prev => !prev)
     return (
         <Container>
             <Helmet>
@@ -82,7 +77,6 @@ const Coins = ({}: ICoinsProps) => {
             </Helmet>
             <Header>
                 <Title>Coin Tracker</Title>
-                <button onClick={toggleDarkAtom}>Toggle Mode</button>
             </Header>
             {isLoading ?
                 <Loader>Loading...</Loader> :

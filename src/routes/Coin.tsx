@@ -5,6 +5,7 @@ import {Link} from "react-router-dom";
 import {useQuery} from "react-query";
 import {fetchCoinInfo, fetchCoinPrice} from "../api";
 import {Helmet} from "react-helmet-async";
+import Chart from "./Chart";
 
 
 const Title = styled.h1`
@@ -53,29 +54,6 @@ const OverviewItem = styled.div`
 const Description = styled.p`
   margin: 20px 0;
   line-height: 1.4rem;
-`;
-
-const Tabs = styled.div`
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  margin: 25px 0px;
-  gap: 10px;
-`;
-
-const Tab = styled.span<{ isActive: boolean }>`
-  text-align: center;
-  text-transform: uppercase;
-  font-size: 12px;
-  font-weight: 400;
-  background-color: rgba(0, 0, 0, 0.5);
-  padding: 16px 0;
-  border-radius: 10px;
-  color: ${(props) =>
-          props.isActive ? props.theme.accentColor : props.theme.textColor};
-
-  a {
-    display: block;
-  }
 `;
 
 const BackButton = styled.button`
@@ -177,6 +155,7 @@ function Coin({}: ICoinProps) {
     )
     const loading = infoLoading || tickersLoading
     const navigate = useNavigate()
+    console.log(infoData, tickersData)
     return (
         <Container>
             <Helmet>
@@ -217,15 +196,7 @@ function Coin({}: ICoinProps) {
                             <span>{tickersData?.max_supply}</span>
                         </OverviewItem>
                     </Overview>
-                    <Tabs>
-                        <Tab isActive={chartMatch !== null}>
-                            <Link to={`/${coinId}/chart`}>Chart</Link>
-                        </Tab>
-                        <Tab isActive={priceMatch !== null}>
-                            <Link to={`/${coinId}/price`}>Price</Link>
-                        </Tab>
-                    </Tabs>
-                    <Outlet context={{coinId}}/>
+                    <Chart coinId={coinId}/>
                 </>
             )}
         </Container>

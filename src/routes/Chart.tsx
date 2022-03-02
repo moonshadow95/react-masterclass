@@ -5,6 +5,16 @@ import {fetchCoinHistory} from "../api";
 import ApexChart from 'react-apexcharts'
 import {useRecoilValue} from "recoil";
 import {isDarkAtom} from "../atoms";
+import styled from "styled-components";
+
+const Container = styled.div`
+  margin-top: 40px;
+
+  .apexcharts-tooltip {
+    background: whitesmoke;
+    color: #000;
+  }
+`
 
 interface IHistorical {
     time_open: string
@@ -20,17 +30,16 @@ interface IHistorical {
 }
 
 interface IChartProps {
-    coinId: string
+    coinId?: string
 }
 
-const Chart = () => {
-    const {coinId} = useOutletContext<IChartProps>()
+const Chart = ({coinId}: IChartProps) => {
     const isDark = useRecoilValue(isDarkAtom)
     const {
         isLoading, data
     } = useQuery<IHistorical>(["ohlcv", coinId], () => fetchCoinHistory(coinId))
     return (
-        <div>{isLoading ? "Loading Chart..." :
+        <Container>{isLoading ? "Loading Chart..." :
             <ApexChart
                 type='candlestick'
                 height={500}
@@ -38,13 +47,12 @@ const Chart = () => {
                     chart: {
                         type: 'candlestick',
                         height: 500,
-                        foreColor: isDark ? '#fff' : '#000'
+                        foreColor: isDark ? '#fff' : '#000',
                     },
                     title: {
                         text: coinId,
                         align: 'left',
                     },
-
                     xaxis: {
                         type: 'datetime',
                     },
@@ -54,8 +62,8 @@ const Chart = () => {
                         },
                     },
                     tooltip: {
-                        enabled: true
-                    }
+                        enabled: true,
+                    },
                 }}
                 series={[{
                     data: data?.map((data: any) => {
@@ -65,7 +73,7 @@ const Chart = () => {
                     }),
                 }]}
             />}
-        </div>
+        </Container>
     );
 }
 
