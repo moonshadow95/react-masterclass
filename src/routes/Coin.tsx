@@ -1,10 +1,10 @@
 import React from "react";
-import {useLocation, useParams, Outlet, useMatch} from "react-router";
+import {useLocation, useParams, Outlet, useMatch, useNavigate} from "react-router";
 import styled from "styled-components";
 import {Link} from "react-router-dom";
 import {useQuery} from "react-query";
 import {fetchCoinInfo, fetchCoinPrice} from "../api";
-import {Helmet} from "react-helmet";
+import {Helmet} from "react-helmet-async";
 
 
 const Title = styled.h1`
@@ -18,12 +18,13 @@ const Loader = styled.span`
 `;
 
 const Container = styled.div`
-  padding: 0px 20px;
+  padding: 0 20px;
   max-width: 480px;
   margin: 0 auto;
 `;
 
 const Header = styled.header`
+  position: relative;
   height: 15vh;
   display: flex;
   justify-content: center;
@@ -76,6 +77,20 @@ const Tab = styled.span<{ isActive: boolean }>`
     display: block;
   }
 `;
+
+const BackButton = styled.button`
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 80px;
+  height: 40px;
+  padding: 8px 14px;
+  font-size: 20px;
+  background-color: rgba(0, 0, 0, 0.5);
+  border-radius: 10px;
+  cursor: pointer;
+`
 
 interface RouteParams {
     coinId?: string
@@ -142,7 +157,10 @@ interface IPrice {
     };
 }
 
-function Coin() {
+interface ICoinProps {
+}
+
+function Coin({}: ICoinProps) {
     const {coinId} = useParams() as RouteParams;
     const {state} = useLocation() as RouteState;
     const priceMatch = useMatch("/:coinId/price")
@@ -158,12 +176,14 @@ function Coin() {
         // {refetchInterval: 1000,}
     )
     const loading = infoLoading || tickersLoading
+    const navigate = useNavigate()
     return (
         <Container>
             <Helmet>
                 <title>{state?.name ? state.name : loading ? "Loading..." : infoData?.name}</title>
             </Helmet>
             <Header>
+                <BackButton onClick={() => navigate('/')}>&larr;</BackButton>
                 <Title>
                     {state?.name ? state.name : loading ? "Loading..." : infoData?.name}
                 </Title>

@@ -3,6 +3,8 @@ import {useOutletContext} from "react-router-dom";
 import {useQuery} from "react-query";
 import {fetchCoinHistory} from "../api";
 import ApexChart from 'react-apexcharts'
+import {useRecoilValue} from "recoil";
+import {isDarkAtom} from "../atoms";
 
 interface IHistorical {
     time_open: string
@@ -17,65 +19,51 @@ interface IHistorical {
     slice: any
 }
 
-interface IChart {
+interface IChartProps {
     coinId: string
 }
 
 const Chart = () => {
-    const {coinId} = useOutletContext<IChart>()
+    const {coinId} = useOutletContext<IChartProps>()
+    const isDark = useRecoilValue(isDarkAtom)
     const {
         isLoading, data
     } = useQuery<IHistorical>(["ohlcv", coinId], () => fetchCoinHistory(coinId))
     return (
         <div>{isLoading ? "Loading Chart..." :
             <ApexChart
-                type="line"
-                series={[
-                    {
-                        name: "Price",
-                        data: data?.map((price: { close: number }) => price.close),
-                    },
-                ]}
+                type='candlestick'
+                height={500}
                 options={{
-                    theme: {
-                        mode: "dark",
-                    },
                     chart: {
-                        height: 300,
-                        width: 500,
-                        toolbar: {},
-                        background: "transparent",
+                        type: 'candlestick',
+                        height: 500,
+                        foreColor: isDark ? '#fff' : '#000'
                     },
-                    stroke: {
-                        curve: "smooth",
-                        width: 4,
+                    title: {
+                        text: coinId,
+                        align: 'left',
                     },
-                    grid: {
-                        show: false,
+
+                    xaxis: {
+                        type: 'datetime',
                     },
                     yaxis: {
-                        show: false,
-                    },
-                    xaxis: {
-                        axisBorder: {show: false},
-                        axisTicks: {show: false},
-                        labels: {show: false},
-                        type: "datetime",
-                        categories: data?.map((date: { time_close: number }) => date.time_close)
-                    },
-                    fill: {
-                        type: "gradient",
-                        gradient: {
-                            gradientToColors: ["#00a8ff"], stops: [0, 100]
+                        tooltip: {
+                            enabled: true,
                         },
                     },
-                    colors: ["#9c88ff"],
                     tooltip: {
-                        y: {
-                            formatter: (value: number) => `$ ${value.toFixed(2)}`
-                        }
+                        enabled: true
                     }
                 }}
+                series={[{
+                    data: data?.map((data: any) => {
+                        const x = new Date(data.time_open)
+                        const y = [data.open, data.high, data.low, data.close].map((item: any) => item.toFixed(2))
+                        return {x, y}
+                    }),
+                }]}
             />}
         </div>
     );

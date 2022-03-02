@@ -5,14 +5,17 @@ import Coin from "./Coin";
 import Chart from "./Chart";
 import Price from "./Price";
 
-const Router = () => (
-    <BrowserRouter>
+interface IRouterProps {
+}
+
+const Router = ({}: IRouterProps) => (
+    <BrowserRouter basename={process.env.PUBLIC_URL}>
         <Routes>
-            <Route path='/:coinId' element={<Coin/>}>
-                <Route path='chart' element={<Chart/>}/>
+            <Route path='/:coinId' element={<Coin />}>
+                <Route path='chart' element={<Chart />}/>
                 <Route path='price' element={<Price/>}/>
             </Route>
-            <Route path='/' element={<Coins/>}/>
+            <Route path='/' element={<Coins />}/>
         </Routes>
     </BrowserRouter>
 );

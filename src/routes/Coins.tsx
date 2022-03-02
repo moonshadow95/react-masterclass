@@ -3,7 +3,9 @@ import styled from "styled-components"
 import {Link} from "react-router-dom"
 import {useQuery} from "react-query"
 import {fetchCoins} from "../api"
-import {Helmet} from "react-helmet"
+import {Helmet} from "react-helmet-async"
+import {useSetRecoilState} from "recoil";
+import {isDarkAtom} from "../atoms";
 
 const Container = styled.div`
   padding: 0 20px;
@@ -21,8 +23,9 @@ const Header = styled.header`
 const CoinList = styled.ul``
 
 const Coin = styled.li`
-  background-color: white;
-  color: ${props => props.theme.bgColor};
+  background-color: ${props => props.theme.cardBgColor};
+  color: ${props => props.theme.textColor};
+  border: 1px solid white;
   border-radius: 15px;
   margin-bottom: 10px;
   font-size: 24px;
@@ -65,8 +68,13 @@ interface ICoin {
     "type": string
 }
 
-const Coins = () => {
+interface ICoinsProps {
+}
+
+const Coins = ({}: ICoinsProps) => {
     const {isLoading, data} = useQuery<ICoin[]>("allCoins", fetchCoins)
+    const setDarkAtom = useSetRecoilState(isDarkAtom)
+    const toggleDarkAtom = () => setDarkAtom(prev => !prev)
     return (
         <Container>
             <Helmet>
@@ -74,11 +82,12 @@ const Coins = () => {
             </Helmet>
             <Header>
                 <Title>Coin Tracker</Title>
+                <button onClick={toggleDarkAtom}>Toggle Mode</button>
             </Header>
             {isLoading ?
                 <Loader>Loading...</Loader> :
                 (<CoinList>
-                    {data?.slice(0, 99).map(coin =>
+                    {data?.slice(0, 29).map(coin =>
                         <Coin key={coin.id}>
                             <Link to={{
                                 pathname: `/${coin.id}`
