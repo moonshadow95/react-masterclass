@@ -1,48 +1,19 @@
 import React, {useState} from 'react'
-import {useForm} from 'react-hook-form'
-import {atom, useRecoilState, useRecoilValue, useSetRecoilState} from "recoil";
-
-interface IForm {
-    toDo: string
-}
-
-interface IToDo {
-    id: number
-    text: string
-    category: "DONE" | "DOING" | "TO_DO"
-}
-
-const toDoState = atom<IToDo[]>({
-    key: 'toDo',
-    default: []
-})
+import CreateToDo from "./CreateToDo";
+import {useRecoilValue} from "recoil";
+import {toDoState} from "../atoms";
+import ToDo from "./ToDo";
 
 const ToDoList = () => {
-    // atom으로부터 값 불러오기
-    // const value = useRecoilValue(toDoState)
-    // 불러온 값 변경하기
-    // const modFn = useSetRecoilState(toDoState)
-
-    // 한줄로 사용하기 setState와 닮았다.
-    const [toDos, setToDos] = useRecoilState(toDoState)
-    const {register, handleSubmit, formState: {errors}, setValue} = useForm<IForm>()
-    const handleValid = ({toDo}: IForm) => {
-        setToDos((oldToDos) => [{id: Date.now(), text: toDo, category: "TO_DO"}, ...oldToDos])
-        setValue('toDo', "")
-    }
+    const toDos = useRecoilValue(toDoState)
     return (
         <div>
             <h1>To Dos</h1>
             <hr/>
-            <form onSubmit={handleSubmit(handleValid)}>
-                <input {...register('toDo', {
-                    required: "Write a to do!"
-                })} type="text" placeholder='Write a To Do'/>
-                <span>{errors?.toDo?.message}</span>
-                <button>Add</button>
-            </form>
+            <CreateToDo/>
             <ul>
-                {toDos.map(toDo => <li key={toDo.id}>{toDo.text}</li>)}
+{/*toDos 배열의 원소 하나 하나가 ToDo 컴포넌트에 필요한 props와 같은 인터페이스를 가지기 때문에 이렇게 쓸 수 있다.*/}
+                {toDos.map(toDo => <ToDo key={toDo.id} {...toDo}/>)}
             </ul>
         </div>
     )
