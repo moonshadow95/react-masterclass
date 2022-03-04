@@ -1,20 +1,27 @@
 import React, {useState} from 'react'
 import CreateToDo from "./CreateToDo";
-import {useRecoilValue} from "recoil";
-import {toDoState} from "../atoms";
+import {useRecoilState, useRecoilValue} from "recoil";
+import {categoryState, toDoSelector, toDoState} from "../atoms";
 import ToDo from "./ToDo";
 
 const ToDoList = () => {
-    const toDos = useRecoilValue(toDoState)
+    // selector 로 변형된 배열을 받는다.
+    const toDos = useRecoilValue(toDoSelector)
+    const [category, setCategory] = useRecoilState(categoryState)
+    const onInput = (event: React.FormEvent<HTMLSelectElement>) => {
+        setCategory(event.currentTarget.value)
+    }
     return (
         <div>
             <h1>To Dos</h1>
             <hr/>
+            <select onInput={onInput} value={category}>
+                <option value="TO_DO">To Do</option>
+                <option value="DOING">Doing</option>
+                <option value="DONE">Done</option>
+            </select>
             <CreateToDo/>
-            <ul>
-{/*toDos 배열의 원소 하나 하나가 ToDo 컴포넌트에 필요한 props와 같은 인터페이스를 가지기 때문에 이렇게 쓸 수 있다.*/}
-                {toDos.map(toDo => <ToDo key={toDo.id} {...toDo}/>)}
-            </ul>
+            {toDos?.map(toDo => <ToDo key={toDo.id} {...toDo}/>)}
         </div>
     )
 };
