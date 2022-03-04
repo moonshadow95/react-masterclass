@@ -1,7 +1,7 @@
 import React from 'react';
-import {useRecoilState} from "recoil";
+import {useRecoilValue, useSetRecoilState} from "recoil";
 import {useForm} from "react-hook-form";
-import {toDoState} from "../atoms";
+import {categoryState, toDoState} from "../atoms";
 
 interface IForm {
     toDo: string
@@ -13,10 +13,11 @@ const CreateToDo = () => {
     // 불러온 값 변경하기
     // const modFn = useSetRecoilState(toDoState)
     // 한줄로 사용하기, setState와 닮았다.
-    const [toDos, setToDos] = useRecoilState(toDoState)
+    const setToDos = useSetRecoilState(toDoState)
+    const category = useRecoilValue(categoryState)
     const {register, handleSubmit, formState: {errors}, setValue} = useForm<IForm>()
     const handleValid = ({toDo}: IForm) => {
-        setToDos((oldToDos) => [{id: Date.now(), text: toDo, category: "TO_DO"}, ...oldToDos])
+        setToDos((oldToDos) => [{id: Date.now(), text: toDo, category}, ...oldToDos])
         setValue('toDo', "")
     }
     return (
