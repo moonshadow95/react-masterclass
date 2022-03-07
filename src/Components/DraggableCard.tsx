@@ -17,7 +17,6 @@ const Card = styled.div`
 
 
 const DraggableCard = ({toDo, index}: IDraggableCardProps) => {
-    console.log(toDo, 'rendered')
     return (
         <Draggable key={toDo} draggableId={toDo} index={index}>
             {(provided) =>
