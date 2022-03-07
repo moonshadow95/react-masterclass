@@ -24,19 +24,27 @@ const Boards = styled.div`
 
 function App() {
     const [toDos, setToDos] = useRecoilState(toDoState)
+    // 싱글 보드
     // destination 목적지, source 움직인 아이템
-    // source를 삭제하고 destination 위치에 넣는다.
+    // 1) 기존 배열을 복제한다.
+    // 2) 복제한 배열에서 source를 삭제하고 destination에 넣는다.
+
+    // 멀티 보드
+    // 1) 움직임이 있는 아이템의 보드를 복제한다.
+    // 2) 복제한 배열에서 source를 삭제하고 destination에 넣는다.
+    // 3) 모든 보드를 복제하고 움직임이 있던 보드를 복제하여 변형한 보드로 변경한다.
     const onDragEnd = ({draggableId, destination, source}: DropResult) => {
-        if (!destination) return
-        // setToDos(oldToDos => {
-        //         const toDosCopy = [...oldToDos]
-        //         // 1) Delete item on source.index
-        //         toDosCopy.splice(source.index, 1)
-        //         // 2) Put it back on the destination.index
-        //         toDosCopy.splice(destination?.index, 0, draggableId)
-        //         return toDosCopy
-        //     }
-        // )
+        if (source?.droppableId === destination?.droppableId) {
+            setToDos((allBoards) => {
+                const boardCopy = [...allBoards[source.droppableId]]
+                boardCopy.splice(source.index, 1)
+                boardCopy.splice(destination?.index, 0, draggableId)
+                return {
+                    ...allBoards, [source.droppableId]: boardCopy
+                }
+            })
+        }
+
     }
     return (
         <>
