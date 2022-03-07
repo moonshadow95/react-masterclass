@@ -13,6 +13,7 @@ const Wrapper = styled.div`
   justify-content: center;
   align-items: center;
   height: 100vh;
+  border-radius: 5px;
 `
 
 const Boards = styled.div`

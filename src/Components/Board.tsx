@@ -5,13 +5,13 @@ import styled from "styled-components";
 
 const Title = styled.h1`
   text-align: center;
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   font-weight: 600;
-  padding: 15px;
+  padding: 10px 0;
+  color: white
 `
 
 const Wrapper = styled.div`
-  padding: 0px 20px 10px;
   border-radius: 5px;
   background-color: ${props => props.theme.boardColor};
   display: flex;
@@ -19,9 +19,10 @@ const Wrapper = styled.div`
 `
 
 const Area = styled.div<IAreaProps>`
-  background-color: ${props => props.isDraggingOver ? "blueviolet" : props.isDraggingFromThis ? "salmon" : 'pink'};
+  background-color: ${props => props.isDraggingOver ? "#546de5" : props.isDraggingFromThis ? "#596275" : '#303952'};
   flex-grow: 1;
   transition: background-color 150ms ease-in-out;
+  padding: 20px;
 `
 
 interface IBoardProps {
