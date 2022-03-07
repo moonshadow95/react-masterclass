@@ -1,7 +1,7 @@
 import React from 'react';
 import {DragDropContext, DropResult} from "react-beautiful-dnd";
 import styled from "styled-components";
-import {useRecoilState, useRecoilValue} from "recoil";
+import {RecoilLoadable, useRecoilState, useRecoilValue} from "recoil";
 import {toDoState} from "./atoms";
 import Board from "./Components/Board";
 
@@ -34,13 +34,27 @@ function App() {
     // 2) 복제한 배열에서 source를 삭제하고 destination에 넣는다.
     // 3) 모든 보드를 복제하고 움직임이 있던 보드를 복제하여 변형한 보드로 변경한다.
     const onDragEnd = ({draggableId, destination, source}: DropResult) => {
-        if (source?.droppableId === destination?.droppableId) {
+        if (!destination) return
+        if (destination?.droppableId === source.droppableId) {
             setToDos((allBoards) => {
                 const boardCopy = [...allBoards[source.droppableId]]
                 boardCopy.splice(source.index, 1)
                 boardCopy.splice(destination?.index, 0, draggableId)
                 return {
                     ...allBoards, [source.droppableId]: boardCopy
+                }
+            })
+        }
+        if (destination.droppableId !== source.droppableId) {
+            setToDos(allBoards => {
+                const sourceBoard = [...allBoards[source.droppableId]]
+                const destinationBoard = [...allBoards[destination.droppableId]]
+                sourceBoard.splice(source.index, 1)
+                destinationBoard.splice(destination?.index, 0, draggableId)
+                return {
+                    ...allBoards,
+                    [source.droppableId]: sourceBoard,
+                    [destination.droppableId]: destinationBoard
                 }
             })
         }
