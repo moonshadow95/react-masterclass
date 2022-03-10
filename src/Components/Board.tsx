@@ -1,11 +1,11 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import DraggableCard from "./DraggableCard";
 import {Droppable} from "react-beautiful-dnd";
 import styled from "styled-components";
 import {useForm} from "react-hook-form";
-import {IToDo, toDoState} from "../atoms";
-import {useRecoilState, useSetRecoilState} from "recoil";
-import {loadToDos, saveToDos} from "../localStorage";
+import {IToDo, toDoState} from "../Util/atoms";
+import {useSetRecoilState} from "recoil";
+import {saveToDos} from "../Util/localStorage";
 
 const Title = styled.h1`
   padding: 14px 0 10px;
@@ -24,7 +24,7 @@ const Wrapper = styled.div`
 `
 
 const Area = styled.div<IAreaProps>`
-  background-color: ${props => props.isDraggingOver ? "#f5cd79" : props.isDraggingFromThis ? "#bebebe" : '#b0b9e7'};
+  background-color: ${props => props.isDraggingOver ? "#f5cd79" : props.isDraggingFromThis ? "#dadada" : '#b0b9e7'};
   flex-grow: 1;
   transition: background-color 150ms ease-in-out;
   padding: 20px;
@@ -41,7 +41,7 @@ const Form = styled.form`
     border: none;
 
     &:focus {
-      outline: 2px solid #546de5
+      outline: 3px solid #f5cd79
     }
   }
 `
@@ -71,8 +71,6 @@ interface IForm {
 }
 
 const Board = ({toDos, boardId}: IBoardProps) => {
-    const x = useRecoilState(toDoState)
-    console.log(x)
     const setToDos = useSetRecoilState(toDoState)
     const {register, setValue, handleSubmit, formState: {errors}} = useForm<IForm>()
     const onValid = ({toDo}: IForm) => {

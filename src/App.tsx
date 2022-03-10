@@ -1,10 +1,12 @@
 import React from 'react';
-import {DragDropContext, DropResult} from "react-beautiful-dnd";
+import {DragDropContext, Droppable, DropResult} from "react-beautiful-dnd";
 import styled from "styled-components";
-import {RecoilLoadable, useRecoilState} from "recoil";
-import {toDoState} from "./atoms";
+import {useRecoilState} from "recoil";
+import {toDoState} from "./Util/atoms";
 import Board from "./Components/Board";
-import {saveToDos} from "./localStorage";
+import {saveToDos} from "./Util/localStorage";
+import DraggableCard from "./Components/DraggableCard";
+import TrashCan from "./Components/TrashCan";
 
 const Wrapper = styled.div`
   display: flex;
@@ -27,18 +29,30 @@ const Boards = styled.div`
 
 function App() {
     const [toDos, setToDos] = useRecoilState(toDoState)
-    // 싱글 보드
+    // 싱글 보드 이동
     // destination 목적지, source 움직인 아이템
     // 1) 기존 배열을 복제한다.
     // 2) 복제한 배열에서 source를 삭제하고 destination에 넣는다.
 
-    // 멀티 보드
+    // 멀티 보드 이동
     // 1) 움직임이 있는 아이템의 보드를 복제한다.
     // 2) 복제한 배열에서 source를 삭제하고 destination에 넣는다.
     // 3) 모든 보드를 복제하고 움직임이 있던 보드를 복제하여 변형한 보드로 변경한다.
     const onDragEnd = (info: DropResult) => {
         const {destination, source} = info
         if (!destination) return
+        if (destination.droppableId === 'trashCan') {
+            setToDos((allBoards) => {
+                const sourceBoard = [...allBoards[source.droppableId]]
+                sourceBoard.splice(source.index, 1)
+                const newToDos = {
+                    ...allBoards, [source.droppableId]: sourceBoard
+                }
+                saveToDos(newToDos)
+                return newToDos
+            })
+            return
+        }
         if (destination?.droppableId === source.droppableId) {
             setToDos((allBoards) => {
                 const boardCopy = [...allBoards[source.droppableId]]
@@ -66,6 +80,7 @@ function App() {
                 return newToDos
             })
         }
+
     }
 
     return (
@@ -76,11 +91,11 @@ function App() {
                         {Object.keys(toDos).map(boardId => <Board key={boardId} toDos={toDos[boardId]}
                                                                   boardId={boardId}/>)}
                     </Boards>
+                    <TrashCan/>
                 </Wrapper>
             </DragDropContext>
         </>
     )
-        ;
 }
 
 export default App;
