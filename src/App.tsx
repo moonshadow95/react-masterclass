@@ -11,6 +11,7 @@ import TrashCan from "./Components/TrashCan";
 const Wrapper = styled.div`
   display: flex;
   max-width: 1200px;
+  min-width: 800px;
   width: 100%;
   margin: 0 auto;
   justify-content: center;
@@ -19,12 +20,12 @@ const Wrapper = styled.div`
   border-radius: 5px;
   font-size: 24px;
 `
-
 const Boards = styled.div`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 10px;
-  width: 100%;
+  min-width: 1200px;
+
 `
 
 function App() {
@@ -40,6 +41,7 @@ function App() {
     // 3) 모든 보드를 복제하고 움직임이 있던 보드를 복제하여 변형한 보드로 변경한다.
     const onDragEnd = (info: DropResult) => {
         const {destination, source} = info
+        console.log(source, destination)
         if (!destination) return
         if (destination.droppableId === 'trashCan') {
             setToDos((allBoards) => {
@@ -80,17 +82,26 @@ function App() {
                 return newToDos
             })
         }
-
     }
 
     return (
         <>
             <DragDropContext onDragEnd={onDragEnd}>
                 <Wrapper>
-                    <Boards>
-                        {Object.keys(toDos).map(boardId => <Board key={boardId} toDos={toDos[boardId]}
-                                                                  boardId={boardId}/>)}
+                    {/*<Droppable droppableId='boards'>*/}
+                    {/*    {(provided) =>*/}
+                    <Boards
+                        // ref={provided.innerRef}
+                    >
+                        {Object.keys(toDos).map((boardId, index) =>
+                            <Board
+                                key={boardId}
+                                toDos={toDos[boardId]}
+                                boardId={boardId}
+                                index={index}/>)}
+                        {/*{provided.placeholder}*/}
                     </Boards>
+                    {/*}</Droppable>*/}
                     <TrashCan/>
                 </Wrapper>
             </DragDropContext>

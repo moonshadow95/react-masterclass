@@ -65,14 +65,13 @@ const TrashCan = () => {
                     ref={provided.innerRef}
                     {...provided.droppableProps}>
                     <Cap>
-                        <Handle></Handle>
+                        <Handle/>
                     </Cap>
                     <Body>
                         <Stripe/>
                         <Stripe/>
                         <Stripe/>
                     </Body>
-                    {provided.placeholder}
                 </Wrapper>
             }
         </Droppable>

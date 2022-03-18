@@ -1,6 +1,6 @@
 import React from 'react';
 import DraggableCard from "./DraggableCard";
-import {Droppable} from "react-beautiful-dnd";
+import {Draggable, Droppable} from "react-beautiful-dnd";
 import styled from "styled-components";
 import {useForm} from "react-hook-form";
 import {IToDo, toDoState} from "../Util/atoms";
@@ -59,6 +59,7 @@ const ErrorMessage = styled.span`
 interface IBoardProps {
     toDos: IToDo[]
     boardId: string
+    index: number
 }
 
 interface IAreaProps {
@@ -70,7 +71,7 @@ interface IForm {
     toDo: string
 }
 
-const Board = ({toDos, boardId}: IBoardProps) => {
+const Board = ({toDos, boardId, index}: IBoardProps) => {
     const setToDos = useSetRecoilState(toDoState)
     const {register, setValue, handleSubmit, formState: {errors}} = useForm<IForm>()
     const onValid = ({toDo}: IForm) => {
@@ -87,10 +88,17 @@ const Board = ({toDos, boardId}: IBoardProps) => {
     }
 
     return (
-        <Wrapper>
+        // <Draggable draggableId={boardId+""} index={index}>
+        //     {(provided,snapShot) =>
+        <Wrapper
+            // ref={provided.innerRef}  {...provided.draggableProps}
+        >
             <Title>{boardId}</Title>
             <Form onSubmit={handleSubmit(onValid)}>
-                <input {...register('toDo', {required: true, maxLength: {value: 25, message: "It's too long."}})}
+                <input {...register('toDo', {
+                    required: true,
+                    maxLength: {value: 25, message: "It's too long."}
+                })}
                        type="text" placeholder={`Add task on ${boardId}`}/>
                 <ErrorMessage>{errors?.toDo?.message}</ErrorMessage>
             </Form>
@@ -111,6 +119,8 @@ const Board = ({toDos, boardId}: IBoardProps) => {
                 }
             </Droppable>
         </Wrapper>
+// }
+// </Draggable>
     )
 }
 
