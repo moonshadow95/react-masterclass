@@ -1,4 +1,4 @@
-import {IToDoState} from "./atoms";
+import {ToDo} from "./atom";
 
 export const loadToDos = () => {
     const localToDos = localStorage.getItem('toDos')
@@ -8,6 +8,6 @@ export const loadToDos = () => {
     return null
 }
 
-export const saveToDos = (toDos: IToDoState) => {
+export const saveToDos = (toDos: ToDo[]) => {
     localStorage.setItem('toDos', JSON.stringify(toDos))
 }
