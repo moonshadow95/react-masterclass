@@ -30,6 +30,7 @@ const Boards = styled.div`
 
 function App() {
     const [toDos, setToDos] = useRecoilState(toDoState)
+    console.log(toDos)
     // 싱글 보드 이동
     // destination 목적지, source 움직인 아이템
     // 1) 기존 배열을 복제한다.
