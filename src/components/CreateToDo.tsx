@@ -1,7 +1,7 @@
 import React from 'react'
 import {useForm} from "react-hook-form"
-import {Categories, toDoState} from "../atom"
-import {useSetRecoilState} from "recoil"
+import {Categories, categoryState, toDoState} from "../atom"
+import {useRecoilValue, useSetRecoilState} from "recoil"
 import {loadToDos, saveToDos} from "../localStorage";
 
 interface Form {
@@ -10,12 +10,15 @@ interface Form {
 
 const CreateToDo = () => {
     const setToDos = useSetRecoilState(toDoState)
+    const category = useRecoilValue(categoryState)
     const {register, handleSubmit, setValue} = useForm<Form>()
     const handleValid = ({toDo}: Form) => {
-        setToDos((prevToDos) => [
-            {id: Date.now(), text: toDo, category: Categories.TO_DO}, ...prevToDos
-        ])
-        saveToDos([{id: Date.now(), text: toDo, category: Categories.TO_DO}, ...loadToDos()])
+        setToDos((prevToDos) => {
+            saveToDos([{id: Date.now(), text: toDo, category: category}, ...prevToDos])
+            return [
+                {id: Date.now(), text: toDo, category}, ...prevToDos
+            ]
+        })
         setValue("toDo", "")
     }
     return (

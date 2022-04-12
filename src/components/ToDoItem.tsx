@@ -13,6 +13,11 @@ const ToDoItem = ({id, text, category}: ToDo) => {
         setToDos((prevToDos) => {
             const targetIndex = prevToDos.findIndex((toDo) => toDo.id === id)
             const newToDo = {id, text, category: name as any}
+            saveToDos([
+                ...prevToDos.slice(0, targetIndex),
+                newToDo,
+                ...prevToDos.slice(targetIndex + 1)
+            ])
             return [
                 ...prevToDos.slice(0, targetIndex),
                 newToDo,
