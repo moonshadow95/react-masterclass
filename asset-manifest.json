@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.js": "/react-masterclass/static/js/main.20a56c41.chunk.js",
-    "main.js.map": "/react-masterclass/static/js/main.20a56c41.chunk.js.map",
+    "main.js": "/react-masterclass/static/js/main.98f803cf.chunk.js",
+    "main.js.map": "/react-masterclass/static/js/main.98f803cf.chunk.js.map",
     "runtime~main.js": "/react-masterclass/static/js/runtime~main.e49be2cc.js",
     "runtime~main.js.map": "/react-masterclass/static/js/runtime~main.e49be2cc.js.map",
     "static/js/2.7ed6add3.chunk.js": "/react-masterclass/static/js/2.7ed6add3.chunk.js",
     "static/js/2.7ed6add3.chunk.js.map": "/react-masterclass/static/js/2.7ed6add3.chunk.js.map",
     "index.html": "/react-masterclass/index.html",
-    "precache-manifest.db5a683f490077284ad5a233dd9dddae.js": "/react-masterclass/precache-manifest.db5a683f490077284ad5a233dd9dddae.js",
+    "precache-manifest.67cf5ca73e0dda6d39cdcc8417c18d14.js": "/react-masterclass/precache-manifest.67cf5ca73e0dda6d39cdcc8417c18d14.js",
     "service-worker.js": "/react-masterclass/service-worker.js"
   }
 }
