@@ -1,6 +1,6 @@
 import React from 'react';
 import {useForm} from "react-hook-form";
-import {useRecoilState} from "recoil";
+import {useSetRecoilState} from "recoil";
 import {categoriesState} from "../atom";
 import {saveCategories} from "../localStorage";
 
@@ -10,7 +10,7 @@ interface Category {
 
 const CreateCategory = () => {
     const {register, handleSubmit, setValue} = useForm<Category>()
-    const [setCategories] = useRecoilState(categoriesState)
+    const setCategories = useSetRecoilState(categoriesState)
     const handleValid = ({category}: Category) => {
         setCategories((prevCategories: any) => {
             saveCategories([category, ...prevCategories])

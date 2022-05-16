@@ -41,5 +41,8 @@ export const toDoSelector = selector({
         const toDos = get(toDoState)
         const category = get(categoryState)
         return toDos.filter(toDo => toDo.category === category)
+    },
+    set: ({set}) => {
+        console.log(set)
     }
 })
