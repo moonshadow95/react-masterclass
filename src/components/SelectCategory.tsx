@@ -8,7 +8,6 @@ const SelectCategory = () => {
     const onInput = (event: React.FormEvent<HTMLSelectElement>) => {
         setCategory(event.currentTarget.value as Categories)
     }
-    console.log(category)
     return (
         <select value={category} onInput={onInput}>
             {

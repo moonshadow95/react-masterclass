@@ -1,10 +1,9 @@
 import React from 'react'
-import {Categories, categoriesState, Category, ToDo, toDoState} from "../atom"
+import {categoriesState, Category, ToDo, toDoState} from "../atom"
 import {useRecoilValue, useSetRecoilState} from "recoil"
-import {loadToDos, saveToDos} from "../localStorage";
+import {saveToDos} from "../localStorage";
 
 const ToDoItem = ({id, text, category}: ToDo) => {
-    const toDos = useRecoilValue(toDoState)
     const setToDos = useSetRecoilState(toDoState)
     const categories = useRecoilValue(categoriesState).filter((item: string) => item !== category)
     const onClick = (event: React.MouseEvent<HTMLButtonElement>) => {

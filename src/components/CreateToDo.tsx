@@ -1,8 +1,8 @@
 import React from 'react'
 import {useForm} from "react-hook-form"
-import {Categories, categoryState, toDoState} from "../atom"
+import {categoryState, toDoState} from "../atom"
 import {useRecoilValue, useSetRecoilState} from "recoil"
-import {loadToDos, saveToDos} from "../localStorage";
+import {saveToDos} from "../localStorage";
 
 interface Form {
     toDo: string

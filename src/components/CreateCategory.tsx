@@ -10,7 +10,7 @@ interface Category {
 
 const CreateCategory = () => {
     const {register, handleSubmit, setValue} = useForm<Category>()
-    const [categories, setCategories] = useRecoilState(categoriesState)
+    const [setCategories] = useRecoilState(categoriesState)
     const handleValid = ({category}: Category) => {
         setCategories((prevCategories: any) => {
             saveCategories([category, ...prevCategories])
@@ -18,7 +18,6 @@ const CreateCategory = () => {
         })
         setValue('category', '')
     }
-    console.log(categories)
 
     return (
         <>
