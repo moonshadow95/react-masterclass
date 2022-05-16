@@ -1,17 +1,22 @@
 import React from 'react';
-import {useRecoilState} from "recoil";
-import {Categories, categoryState} from "../atom";
+import {useRecoilState, useRecoilValue} from "recoil";
+import {Categories, categoriesState, categoryState} from "../atom";
 
 const SelectCategory = () => {
     const [category, setCategory] = useRecoilState(categoryState)
+    const categories = useRecoilValue(categoriesState)
     const onInput = (event: React.FormEvent<HTMLSelectElement>) => {
         setCategory(event.currentTarget.value as Categories)
     }
+    console.log(category)
     return (
         <select value={category} onInput={onInput}>
-            <option value={Categories.TO_DO}>To Do</option>
-            <option value={Categories.DOING}>Doing</option>
-            <option value={Categories.DONE}>Done</option>
+            {
+                categories.map(
+                    (category: string, index: number) =>
+                        <option key={index} value={category}>{category}</option>
+                )
+            }
         </select>
     )
 };

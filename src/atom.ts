@@ -1,5 +1,5 @@
 import {atom, selector} from "recoil";
-import {loadToDos, saveToDos} from "./localStorage";
+import {loadCategories, loadToDos} from "./localStorage";
 
 export enum Categories {
     "TO_DO" = "TO_DO",
@@ -7,12 +7,23 @@ export enum Categories {
     "DONE" = "DONE"
 }
 
+
 export interface ToDo {
     id: number
     text: string
     category: Categories
 }
 
+export interface Category {
+    text: string
+}
+
+export const categoriesState = atom({
+    key: 'categories',
+    default: loadCategories() || [Categories.TO_DO, Categories.DOING, Categories.DONE]
+})
+
+// Selected category
 export const categoryState = atom<Categories>({
     key: 'category',
     default: Categories.TO_DO
@@ -23,6 +34,7 @@ export const toDoState = atom<ToDo[]>({
     default: loadToDos() || []
 })
 
+// Get current category's toDos
 export const toDoSelector = selector({
     key: 'toDoSelector',
     get: ({get}) => {

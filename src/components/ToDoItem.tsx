@@ -1,11 +1,12 @@
 import React from 'react'
-import {Categories, ToDo, toDoState} from "../atom"
+import {Categories, categoriesState, Category, ToDo, toDoState} from "../atom"
 import {useRecoilValue, useSetRecoilState} from "recoil"
 import {loadToDos, saveToDos} from "../localStorage";
 
 const ToDoItem = ({id, text, category}: ToDo) => {
     const toDos = useRecoilValue(toDoState)
     const setToDos = useSetRecoilState(toDoState)
+    const categories = useRecoilValue(categoriesState).filter((item: string) => item !== category)
     const onClick = (event: React.MouseEvent<HTMLButtonElement>) => {
         const {
             currentTarget: {name}
@@ -32,22 +33,14 @@ const ToDoItem = ({id, text, category}: ToDo) => {
             return [...prevToDos.slice(0, targetIndex), ...prevToDos.slice(targetIndex + 1)]
         })
     }
+    // 카테고리들을 가져와서, 현재 카테고리를 제외한 배열, map 으로 버튼 표시
     return (
         <li>
             <span>{text}</span>
-            {
-                category !== Categories.TO_DO &&
-                <button name={Categories.TO_DO} onClick={onClick}>To Do</button>
-            }
-            {
-                category !== Categories.DOING &&
-                <button name={Categories.DOING} onClick={onClick}>Doing</button>
-            }
-            {
-                category !== Categories.DONE &&
-                <button name={Categories.DONE} onClick={onClick}>Done</button>
-            }
-            <button onClick={onDeleteClick}>Delete</button>
+            {categories.map((category: Category, index: number) =>
+                <button key={index} name={category + ''} onClick={onClick}>{category}</button>
+            )}
+            <button name={category} onClick={onDeleteClick}>Delete</button>
         </li>
     )
 };

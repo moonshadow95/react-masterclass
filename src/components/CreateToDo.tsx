@@ -26,7 +26,7 @@ const CreateToDo = () => {
             <input
                 type="text"
                 {...register("toDo", {required: true})}
-                placeholder={'Write a to do'}
+                placeholder={'Write a to do.'}
             />
             <button>Add</button>
         </form>
